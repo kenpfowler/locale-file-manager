@@ -1,0 +1,6 @@
+# local config files
+.vscode
+
+# generated files
+dist
+node_modules
