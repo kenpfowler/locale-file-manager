@@ -1,19 +1,23 @@
 {
   "name": "locale_file_generator",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "A tool for managing locale files from a single source",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vitest",
     "test": "vitest run",
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
-    "ci": "pnpm run lint && pnpm run test && pnpm run build"
+    "ci": "pnpm run lint && pnpm run test && pnpm run build",
+    "release": "pnpm run lint && pnpm run test && pnpm run build && changeset publish"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Ken Fowler",
+  "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@types/node": "^22.4.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
