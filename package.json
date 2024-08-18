@@ -1,6 +1,6 @@
 {
   "name": "locale_file_generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A tool for managing locale files from a single source",
   "private": "false",
   "main": "./dist/index.js",
