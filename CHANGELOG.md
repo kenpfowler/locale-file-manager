@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.2.0
+
+### Minor Changes
+
+- 0517ca6: Added writer class
+
 ## 0.1.0
 
 ### Minor Changes
