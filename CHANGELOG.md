@@ -1,5 +1,16 @@
 # locale_file_generator
 
+## 0.3.0
+
+### Minor Changes
+
+- 586c816: add manager class
+- 586c816: Add generator class
+
+### Patch Changes
+
+- 586c816: expose classes via index
+
 ## 0.2.0
 
 ### Minor Changes
