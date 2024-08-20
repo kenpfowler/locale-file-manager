@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.5.0
+
+### Minor Changes
+
+- 5b4b92d: add cli usage
+
 ## 0.4.0
 
 ### Minor Changes
