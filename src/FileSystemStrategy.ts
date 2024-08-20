@@ -5,29 +5,7 @@ import * as path from "path";
 import { IStrategy } from "./IStrategy";
 import { LocaleFileWriter } from "./LocaleFileWriter";
 import { LocaleFileValidator } from "./LocaleFileValidator";
-import { Locale } from "./Locale";
 import { RecordWithUnknownValue } from "./Types";
-
-const ConfigSchema = z.object({
-  locales: z.array(z.nativeEnum(Locale)),
-  locales_path: z.string(),
-  source_path: z.string(),
-  source_locale: z.nativeEnum(Locale),
-});
-
-export function readConfig(filePath: string) {
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const config = JSON.parse(fileContent);
-
-  const result = ConfigSchema.safeParse(config);
-
-  if (!result.success) {
-    console.error("Invalid configuration:", result.error.errors);
-    throw new Error("Invalid configuration file");
-  }
-
-  return result.data;
-}
 
 export class FileSystemStrategy implements IStrategy {
   // dependencies
@@ -121,7 +99,7 @@ export class FileSystemStrategy implements IStrategy {
   public RemoveLocale(key: string, output: object) {
     // @ts-ignore
     delete output[key];
-    fs.unlinkSync(key);
+    fs.unlinkSync(path.join(process.cwd(), `${this.locales_path}${key}.json`));
   }
 
   public async OutputLocales(locales: object) {

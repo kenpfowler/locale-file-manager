@@ -338,7 +338,6 @@ export class LocaleFileManager {
       }
     }
 
-    console.log(this.output);
     console.log("Finished generating!");
     return this.strategy.OutputLocales(this.output);
   }
