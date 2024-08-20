@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.4.0
+
+### Minor Changes
+
+- 00f2205: export types separate from index
+
 ## 0.3.0
 
 ### Minor Changes
