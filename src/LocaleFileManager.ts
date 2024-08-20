@@ -119,15 +119,12 @@ export class LocaleFileManager {
     return !!diffs.length;
   }
 
-  public async RemoveLocales(
-    locales_to_remove: string[],
-    handleRemove: (key: string, output: object) => void
-  ) {
+  public async RemoveLocales(locales_to_remove: string[]) {
     if (!locales_to_remove.length) return;
 
     for (let index = 0; index < locales_to_remove.length; index++) {
       const key = locales_to_remove[index];
-      handleRemove(key, this.output);
+      this.strategy.RemoveLocale(key, this.output);
     }
   }
 
@@ -247,7 +244,7 @@ export class LocaleFileManager {
         this.GetSourceLocaleObject()
       );
 
-      console.log("Generated locale object");
+      console.log("Generated locale objects");
       return this.strategy.OutputLocales(this.output);
     }
 
@@ -266,12 +263,22 @@ export class LocaleFileManager {
     const batch = this.GetLocalesToAddRemoveFromDiff(diff, this.locales);
 
     if (this.IsLocalesChanged(diff)) {
-      await this.GenerateAllLocaleFiles(
-        batch.add,
-        this.source_locale,
-        this.GetSourceLocaleObject()
-      );
-      this.RemoveLocales(batch.remove, this.strategy.RemoveLocale);
+      if (batch.add.length) {
+        this.output = await this.GenerateAllLocaleFiles(
+          batch.add,
+          this.source_locale,
+          this.GetSourceLocaleObject()
+        );
+
+        console.log(`Added the following locale(s): ${batch.add.join(", ")}`);
+      }
+
+      if (batch.remove.length) {
+        this.RemoveLocales(batch.remove);
+        console.log(
+          `Removed the following locale(s): ${batch.remove.join(", ")}`
+        );
+      }
     }
 
     // 3. it's possible that locales was not changed, but that the source file was changed.
