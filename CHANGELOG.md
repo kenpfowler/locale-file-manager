@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.5.2
+
+### Patch Changes
+
+- a30db81: update readme
+
 ## 0.5.1
 
 ### Patch Changes
