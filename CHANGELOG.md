@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.5.1
+
+### Patch Changes
+
+- 267ccfc: update README.md
+
 ## 0.5.0
 
 ### Minor Changes
