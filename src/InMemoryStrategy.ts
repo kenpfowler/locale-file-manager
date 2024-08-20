@@ -1,4 +1,4 @@
-import { IStrategy } from "./LocaleFileManager";
+import { IStrategy } from "./IStrategy";
 import { LocaleFileValidator } from "./LocaleFileValidator";
 
 export class InMemoryStrategy implements IStrategy {

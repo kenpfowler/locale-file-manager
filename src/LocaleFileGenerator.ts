@@ -4,11 +4,12 @@ dotenv.config();
 
 import { OpenAI } from "openai";
 import { Locale } from "./Locale";
+import { IGenerator } from "./IGenerator";
 
 /**
  * wrapper for the open ai client that can be configured to generate locale files from a single source file
  */
-export class LocaleFileGenerator {
+export class LocaleFileGenerator implements IGenerator {
   /**
    * open ai client
    */

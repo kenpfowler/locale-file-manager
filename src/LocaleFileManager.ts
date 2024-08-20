@@ -1,99 +1,22 @@
-import * as fs from "fs";
-import { diff, DiffDeleted, applyChange } from "deep-diff";
+import { ConfigType, Config } from "./Config";
+import { IStrategy } from "./IStrategy";
+import { IGenerator } from "./IGenerator";
+import { Difference } from "./Difference";
+import { RecordWithUnknownValue } from "./Types";
+
 import { LocaleFileValidator } from "./LocaleFileValidator";
-import { Locale } from "./Locale";
 import { LocaleFileGenerator } from "./LocaleFileGenerator";
-import { LocaleFileWriter } from "./LocaleFileWriter";
+
 import { InMemoryStrategy } from "./InMemoryStrategy";
 import { FileSystemStrategy } from "./FileSystemStrategy";
+
+import { Locale } from "./Locale";
+
+import { diff, DiffDeleted, applyChange } from "deep-diff";
 import z, { ZodTypeAny } from "zod";
 
-export enum ConfigType {
-  InMemory,
-  FileSystem,
-}
-
-export const InMemoryConfigSchema = z.object({
-  type: z.literal(ConfigType.InMemory),
-  locales: z.array(z.nativeEnum(Locale)),
-  source_locale: z.nativeEnum(Locale),
-  source: z.string(),
-  previous_output: z.string(),
-});
-
-export const FileSystemConfigSchema = z.object({
-  type: z.literal(ConfigType.FileSystem),
-  locales: z.array(z.nativeEnum(Locale)),
-  locales_path: z.string(),
-  source_path: z.string(),
-  source_locale: z.nativeEnum(Locale),
-});
-
-const ConfigUnion = z.discriminatedUnion("type", [
-  FileSystemConfigSchema,
-  InMemoryConfigSchema,
-]);
-
-export type Config = z.infer<typeof ConfigUnion>;
-
-export interface IStrategy {
-  GetLocalesSource: (source?: string) => object;
-  GetPreviousLocales: (source?: string) => object | null;
-  RemoveLocale: (key: string, output: object) => void;
-  OutputLocales: (locales: object) => Promise<void | string>;
-}
-
 /**
- * kind - indicates the kind of change; will be one of the following:
- *
- * N - indicates a newly added property/element
- *
- * D - indicates a property/element was deleted
- *
- * E - indicates a property/element was edited
- *
- * A - indicates a change occurred within an array
- *
- * https://www.npmjs.com/package/deep-diff
- */
-export enum Difference {
-  New = "N",
-  Deleted = "D",
-  Edited = "E",
-  InArray = "A",
-}
-
-const ConfigSchema = z.object({
-  locales: z.array(z.nativeEnum(Locale)),
-  locales_path: z.string(),
-  source_path: z.string(),
-  source_locale: z.nativeEnum(Locale),
-});
-
-export function readConfig(filePath: string) {
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const config = JSON.parse(fileContent);
-
-  const result = ConfigSchema.safeParse(config);
-
-  if (!result.success) {
-    console.error("Invalid configuration:", result.error.errors);
-    throw new Error("Invalid configuration file");
-  }
-
-  return result.data;
-}
-
-export type LocaleFileManagerConfig = {
-  generator: LocaleFileGenerator;
-  validator: LocaleFileValidator;
-  writer: LocaleFileWriter;
-};
-
-export type RecordWithUnknownValue<T = unknown> = Record<string, T>;
-
-/**
- * manages changes to the generated files in the locales folder
+ * manages changes to a locales object given a source, list of locales, and previously generated locales
  */
 export class LocaleFileManager {
   // config
@@ -101,7 +24,7 @@ export class LocaleFileManager {
 
   //  dependencies
   private readonly strategy: IStrategy;
-  private readonly generator: LocaleFileGenerator = new LocaleFileGenerator();
+  private readonly generator: IGenerator = new LocaleFileGenerator();
   private readonly validator: LocaleFileValidator = new LocaleFileValidator();
 
   // locales state

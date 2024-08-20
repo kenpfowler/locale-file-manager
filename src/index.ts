@@ -1,7 +1,1 @@
-export { Locale } from "./Locale";
-
-export {
-  LocaleFileManager,
-  ConfigType,
-  InMemoryConfigSchema,
-} from "./LocaleFileManager";
+export { LocaleFileManager } from "./LocaleFileManager";

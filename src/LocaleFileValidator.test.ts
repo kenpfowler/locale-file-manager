@@ -1,13 +1,9 @@
 import { LocaleFileValidator } from "./LocaleFileValidator";
 import { z, ZodSchema } from "zod";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 
 describe("LocaleFileValidator", () => {
-  let validator: LocaleFileValidator;
-
-  beforeEach(() => {
-    validator = new LocaleFileValidator();
-  });
+  const validator = new LocaleFileValidator();
 
   it("should validate that the source is a string", () => {
     const source = '{"key": "value"}';
