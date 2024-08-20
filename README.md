@@ -84,4 +84,4 @@ Prepare for 1.0 release
 
 - Unit test classes
 - Keep README.md document updated
--
+- OpenAI should not be dependency. User should be able to supply their own generations as long as it implements interface that works with program.
