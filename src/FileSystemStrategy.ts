@@ -27,9 +27,10 @@ export class FileSystemStrategy implements IStrategy {
     source_path: string;
     locales_path: string;
   }) {
-    this.EnsureLocalesFolderExists();
     this.locales_path = locales_path;
     this.source_path = source_path;
+
+    this.EnsureLocalesFolderExists();
     this.generated_locale_file_names = this.GetLocaleFileNames();
   }
 
@@ -50,6 +51,12 @@ export class FileSystemStrategy implements IStrategy {
   }
 
   private readJSONFile(filePath: string) {
+    const maybeJSON = fs.readFileSync(filePath, "utf8");
+
+    if (maybeJSON.length === 0) {
+      throw Error(`File should be in JSON format at: ${filePath}`);
+    }
+
     const file = this.validator.parseJSON(fs.readFileSync(filePath, "utf8"));
     return file;
   }
@@ -99,7 +106,9 @@ export class FileSystemStrategy implements IStrategy {
   public RemoveLocale(key: string, output: object) {
     // @ts-ignore
     delete output[key];
-    fs.unlinkSync(path.join(process.cwd(), `${this.locales_path}${key}.json`));
+    fs.unlinkSync(
+      path.join(path.join(process.cwd(), this.locales_path), `${key}.json`)
+    );
   }
 
   public async OutputLocales(locales: object) {
