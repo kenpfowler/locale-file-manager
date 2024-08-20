@@ -1,5 +1,12 @@
 # locale_file_generator
 
+## 0.5.3
+
+### Patch Changes
+
+- b694f2e: - fix bin value
+  - check if locales files exists before instantiating
+
 ## 0.5.2
 
 ### Patch Changes
