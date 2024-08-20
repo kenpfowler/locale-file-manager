@@ -1,5 +1,12 @@
 # locale_file_generator
 
+## 0.5.4
+
+### Patch Changes
+
+- 7a00010: bug fixes to FileSystemStrategy and LocaleFileManager
+  readme update
+
 ## 0.5.3
 
 ### Patch Changes
