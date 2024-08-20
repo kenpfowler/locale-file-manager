@@ -5,9 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "bin": {
-    "manage": "./dist/cli.js"
-  },
+  "bin": "./dist/cli.js",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

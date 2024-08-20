@@ -27,10 +27,10 @@ export class FileSystemStrategy implements IStrategy {
     source_path: string;
     locales_path: string;
   }) {
+    this.EnsureLocalesFolderExists();
     this.locales_path = locales_path;
     this.source_path = source_path;
     this.generated_locale_file_names = this.GetLocaleFileNames();
-    this.EnsureLocalesFolderExists();
   }
 
   private EnsureLocalesFolderExists(): void {

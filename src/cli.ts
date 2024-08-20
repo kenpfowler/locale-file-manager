@@ -27,7 +27,6 @@ const main = async () => {
     // Load and process the config file
     const config = readConfig(configFilePath);
 
-    // Your package logic goes here
     console.log("Config loaded successfully:", config);
 
     const context = new LocaleFileManager({
