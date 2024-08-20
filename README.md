@@ -2,6 +2,8 @@
 
 ## Manage locale files from a single source locale
 
+DISCLAIMER: this package is in active development. it may have bugs or may not work as expected. Please feel free to contribute if interested!
+
 There are two ways to use this package. In your code or from the command line.
 
 ### Use from command line
@@ -65,8 +67,8 @@ import {
 const config: typeof InMemoryConfigSchema = {
   output,
   source,
-  source_locale: from_locale,
-  locales: to_locale.split(","),
+  source_locale,
+  locales,
   type: ConfigType.InMemory,
 };
 
