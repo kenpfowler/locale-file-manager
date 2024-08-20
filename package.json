@@ -1,6 +1,6 @@
 {
   "name": "locale_file_generator",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A tool for managing locale files from a single source",
   "publishConfig": {
     "access": "public"
