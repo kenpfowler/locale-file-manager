@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.5.5
+
+### Patch Changes
+
+- c30c770: change name of package to match conventions
+
 ## 0.5.4
 
 ### Patch Changes
