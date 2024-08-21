@@ -1,5 +1,5 @@
 {
-  "name": "locale_file_generator",
+  "name": "locale-file-manager",
   "version": "0.5.4",
   "description": "A tool for managing locale files from a single source",
   "publishConfig": {
