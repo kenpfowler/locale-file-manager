@@ -43,7 +43,7 @@ OPENAI_API_KEY="your-api-key"
 5. Call the program and point to your configuration file
 
 ```sh
-npx locale_file_generator ./config.json
+npx locale-file-manager ./config.json
 ```
 
 ### Use in code
@@ -51,18 +51,18 @@ npx locale_file_generator ./config.json
 1. Install the package
 
 ```sh
-npm i locale_file_generator
+npm i locale-file-manager
 ```
 
 2. Import the following packages and configure the file manager
 
 ```ts
-import { LocaleFileManager } from "locale_file_generator";
+import { LocaleFileManager } from "locale-file-manager";
 import {
   ConfigType,
   InMemoryConfigSchema,
   Locale,
-} from "locale_file_generator/dist/lib";
+} from "locale-file-manager/dist/lib";
 
 const config: typeof InMemoryConfigSchema = {
   output,
