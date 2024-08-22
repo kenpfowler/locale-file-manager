@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.5.6
+
+### Patch Changes
+
+- 183b34a: fix readme text
+
 ## 0.5.5
 
 ### Patch Changes
