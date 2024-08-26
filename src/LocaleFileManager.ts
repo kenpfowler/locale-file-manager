@@ -294,6 +294,9 @@ export class LocaleFileManager {
     // lets provide the locales less any just generated locales as an arg
 
     if (!changes) {
+      // FIXME: this log does not not make sense.  EX: we add/remove a locale and generate.
+      // this makes is seem like we have not made any changes nor have we generated anything, but we have.
+      // we're ready to conclude the program AND we have potentially made a generation.
       console.log(
         "Source file is identical to locales. Make changes before generating new files."
       );
