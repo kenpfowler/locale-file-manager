@@ -102,7 +102,3 @@ Prepare for 1.0 release
 - Might consider removing deep-diff dependency since it is no longer maintained
 - Add appropriate error handling and logging
 - Unexpected behavior when there are duplicate keys. Key gets overridden with last vale.
-
-```
-
-```

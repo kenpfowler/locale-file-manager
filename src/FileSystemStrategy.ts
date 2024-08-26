@@ -1,10 +1,17 @@
 import * as fs from "fs";
 import * as path from "path";
+import z from "zod";
 
 import { IStrategy } from "./IStrategy";
 import { LocaleFileWriter } from "./LocaleFileWriter";
 import { LocaleFileValidator } from "./LocaleFileValidator";
 import { RecordWithUnknownValue } from "./Types";
+import { FileSystemConfigSchema } from "./Config";
+
+export type FileSystemStrategyArgs = Pick<
+  z.infer<typeof FileSystemConfigSchema>,
+  "excluded_files" | "locales_path" | "source_path"
+>;
 
 export class FileSystemStrategy implements IStrategy {
   // dependencies
@@ -13,6 +20,7 @@ export class FileSystemStrategy implements IStrategy {
 
   // locales state
   private readonly locales_path: string;
+  private readonly excluded_files: string[];
   private readonly generated_locale_file_names: string[];
 
   // sources state
@@ -22,12 +30,11 @@ export class FileSystemStrategy implements IStrategy {
   constructor({
     source_path,
     locales_path,
-  }: {
-    source_path: string;
-    locales_path: string;
-  }) {
+    excluded_files,
+  }: FileSystemStrategyArgs) {
     this.locales_path = locales_path;
     this.source_path = source_path;
+    this.excluded_files = excluded_files ?? [];
 
     this.EnsureLocalesFolderExists();
     this.generated_locale_file_names = this.GetLocaleFileNames();
@@ -66,6 +73,8 @@ export class FileSystemStrategy implements IStrategy {
     }
 
     const locales = fs.readdirSync(this.locales_path);
+    locales.filter((locale) => !this.excluded_files.includes(locale));
+
     return locales;
   }
 
