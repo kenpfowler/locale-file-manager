@@ -43,14 +43,14 @@ OPENAI_API_KEY="your-api-key"
 
 5. Configure your configuration file.
 
-````json
+```json
 {
   "locales": ["array", "of", "locales", "to", "create", "generations", "for"],
   "locales_path": "path-to-locales-folder",
   "source_path": "path-to-source-locale-file",
   "source_locale": "language-of-source-locale-file"
 }
-
+```
 
 6. Call the program and point to your configuration file to manage locales
 
@@ -102,4 +102,7 @@ Prepare for 1.0 release
 - Might consider removing deep-diff dependency since it is no longer maintained
 - Add appropriate error handling and logging
 - Unexpected behavior when there are duplicate keys. Key gets overridden with last vale.
-````
+
+```
+
+```
