@@ -12,7 +12,13 @@ There are two ways to use this package. In your code or from the command line.
 
 ### Use from command line
 
-1. Run the init command to scaffold the necessary configuration files. It will create the following items:
+1. Install the package
+
+```sh
+npm i locale-file-manager
+```
+
+2. Run the init command to scaffold the necessary configuration files. It will create the following items:
 
 ```sh
 npx locale-file-manager-init
@@ -25,19 +31,19 @@ npx locale-file-manager-init
 | en.json     | file   | source locale file (can be any language) |
 | .env        | file   | openai api key                           |
 
-2. Add your openai api key to your .env file
+3. Add your openai api key to your .env file
 
 ```sh
 OPENAI_API_KEY="your-api-key"
 ```
 
-3. Configure your source locale file with your desired translations.
+4. Configure your source locale file with your desired translations.
 
 ```json
 { "greeting": "Hello, World!" }
 ```
 
-4. Configure your configuration file.
+5. Configure your configuration file.
 
 ````json
 {
@@ -48,7 +54,7 @@ OPENAI_API_KEY="your-api-key"
 }
 
 
-5. Call the program and point to your configuration file to manage locales
+6. Call the program and point to your configuration file to manage locales
 
 ```sh
 npx locale-file-manager-cli ./config.json
