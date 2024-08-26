@@ -15,7 +15,7 @@ There are two ways to use this package. In your code or from the command line.
 1. Install the package
 
 ```sh
-npm i locale-file-manager
+npm i -D locale-file-manager
 ```
 
 2. Run the init command to scaffold the necessary configuration files. It will create the following items:
