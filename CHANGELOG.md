@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.5
+
+### Patch Changes
+
+- 3049b65: Add ability to exclude locale folder files from being used by the program
+
 ## 0.6.4
 
 ### Patch Changes
