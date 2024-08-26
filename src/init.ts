@@ -12,7 +12,7 @@ const files: { [key: string]: string } = {
   "source_path": "en.json",
   "source_locale": "en"
 }`,
-  "locales/en.json": `{
+  "en.json": `{
   "greeting": "Hello, World!"
 }`,
   ".env": `OPENAI_API_KEY="your-api-key"`,

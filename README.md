@@ -12,43 +12,47 @@ There are two ways to use this package. In your code or from the command line.
 
 ### Use from command line
 
-1. Configure your project by adding the following files/folder to the root of your project:
+1. Run the init command to scaffold the necessary configuration files. It will create the following items:
+
+```sh
+npx locale-file-manager-init
+```
 
 | item        | type   | description                              |
 | ----------- | ------ | ---------------------------------------- |
-| locales     | folder | holds locale files                       |
-| config.json | file   | configuration                            |
+| locales     | folder | holds generated locale files             |
+| config.json | file   | configures program                       |
 | en.json     | file   | source locale file (can be any language) |
 | .env        | file   | openai api key                           |
 
-2. Configure your project in config.json
-
-```json
-{
-  "locales": ["en", "fr-CA"],
-  "locales_path": "locales",
-  "source_path": "en.json",
-  "source_locale": "en"
-}
-```
-
-3. Add your locale file to en.json
-
-```json
-{ "greeting": "Hello, World!" }
-```
-
-4. Add your openai api key to your .env file
+2. Add your openai api key to your .env file
 
 ```sh
 OPENAI_API_KEY="your-api-key"
 ```
 
-5. Call the program and point to your configuration file
+3. Configure your source locale file with your desired translations.
+
+```json
+{ "greeting": "Hello, World!" }
+```
+
+4. Configure your configuration file.
+
+````json
+{
+  "locales": ["array", "of", "locales", "to", "create", "generations", "for"],
+  "locales_path": "path-to-locales-folder",
+  "source_path": "path-to-source-locale-file",
+  "source_locale": "language-of-source-locale-file"
+}
+
+
+5. Call the program and point to your configuration file to manage locales
 
 ```sh
-npx locale-file-manager ./config.json
-```
+npx locale-file-manager-cli ./config.json
+````
 
 ### Use in code
 
