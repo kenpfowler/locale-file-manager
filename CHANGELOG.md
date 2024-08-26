@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.2
+
+### Patch Changes
+
+- 55ffc81: fix init script and docs
+
 ## 0.6.1
 
 ### Patch Changes
