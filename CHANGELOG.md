@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.1
+
+### Patch Changes
+
+- 528d550: fix bin scripts
+
 ## 0.6.0
 
 ### Minor Changes
