@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.3
+
+### Patch Changes
+
+- 5297a01: fix readme
+
 ## 0.6.2
 
 ### Patch Changes
