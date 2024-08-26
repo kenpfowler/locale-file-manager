@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.6
+
+### Patch Changes
+
+- de5b5e7: filter excluded file
+
 ## 0.6.5
 
 ### Patch Changes
