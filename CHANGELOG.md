@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.0
+
+### Minor Changes
+
+- 60c0cba: add initialization script
+
 ## 0.5.6
 
 ### Patch Changes
