@@ -6,8 +6,8 @@
     "access": "public"
   },
   "bin": {
-    "cli": "./dist/cli.js",
-    "init": "./dist/init.js"
+    "locale-file-manager-cli": "./dist/cli.js",
+    "locale-file-manager-init": "./dist/init.js"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
