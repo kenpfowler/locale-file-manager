@@ -2,9 +2,13 @@
 
 ## Manage locale files from a single source locale
 
-DISCLAIMER: this package is in active development. it may have bugs or may not work as expected. Please feel free to contribute if interested!
+_DISCLAIMER: this package is in active development. it may have bugs or may not work as expected. Please feel free to contribute if interested!_
 
 There are two ways to use this package. In your code or from the command line.
+
+### Head over to the demo webpage
+
+[Visit the demo website](https://www.localebliss.com/)
 
 ### Use from command line
 
@@ -89,3 +93,4 @@ Prepare for 1.0 release
 - OpenAI should not be dependency. User should be able to supply their own generations as long as it implements interface that works with program.
 - Might consider removing deep-diff dependency since it is no longer maintained
 - Add appropriate error handling and logging
+- Unexpected behavior when there are duplicate keys. Key gets overridden with last vale.
