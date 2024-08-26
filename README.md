@@ -4,11 +4,9 @@
 
 _DISCLAIMER: this package is in active development. it may have bugs or may not work as expected. Please feel free to contribute if interested!_
 
+[Head over to the demo webpage](https://www.localebliss.com/) to try it out.
+
 There are two ways to use this package. In your code or from the command line.
-
-### Head over to the demo webpage
-
-[Visit the demo website](https://www.localebliss.com/)
 
 ### Use from command line
 
@@ -58,7 +56,7 @@ OPENAI_API_KEY="your-api-key"
 
 ```sh
 npx locale-file-manager-cli ./config.json
-````
+```
 
 ### Use in code
 
@@ -104,3 +102,4 @@ Prepare for 1.0 release
 - Might consider removing deep-diff dependency since it is no longer maintained
 - Add appropriate error handling and logging
 - Unexpected behavior when there are duplicate keys. Key gets overridden with last vale.
+````
