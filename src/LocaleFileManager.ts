@@ -41,6 +41,7 @@ export class LocaleFileManager {
         this.strategy = new FileSystemStrategy({
           source_path: args.source_path,
           locales_path: args.locales_path,
+          excluded_files: args.excluded_files,
         });
         this.locales = args.locales;
         this.source_locale = args.source_locale;
