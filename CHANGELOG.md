@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.9
+
+### Patch Changes
+
+- 1f7b666: fix bug merging output
+
 ## 0.6.8
 
 ### Patch Changes
