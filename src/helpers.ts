@@ -4,6 +4,7 @@ import fs from "fs";
 
 const ConfigSchema = z.object({
   locales: z.array(z.nativeEnum(Locale)),
+  excluded_files: z.optional(z.array(z.string())),
   locales_path: z.string(),
   source_path: z.string(),
   source_locale: z.nativeEnum(Locale),

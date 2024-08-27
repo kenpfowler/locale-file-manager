@@ -73,7 +73,7 @@ export class FileSystemStrategy implements IStrategy {
     }
 
     const locales = fs.readdirSync(this.locales_path);
-    return locales.filter((locale) => this.excluded_files.includes(locale));
+    return locales.filter((locale) => !this.excluded_files.includes(locale));
   }
 
   private GetFullLocalesPath() {
