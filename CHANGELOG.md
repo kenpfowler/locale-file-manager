@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.7
+
+### Patch Changes
+
+- a77e36c: pass args
+
 ## 0.6.6
 
 ### Patch Changes
