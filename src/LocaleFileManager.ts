@@ -335,10 +335,10 @@ export class LocaleFileManager {
       value
     );
 
-    for (const key in this.output) {
-      if (Object.prototype.hasOwnProperty.call(this.output, key)) {
+    for (const key in result) {
+      if (Object.prototype.hasOwnProperty.call(result, key)) {
         //@ts-ignore
-        this.output[key] = { ...this.output[key], ...result[key] };
+        this.output[key] = { ...this.previous_output[key], ...result[key] };
         for (let index = 0; index < deletions.length; index++) {
           const element = deletions[index];
           if (element) {
