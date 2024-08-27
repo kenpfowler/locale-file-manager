@@ -12,7 +12,7 @@ import { FileSystemStrategy } from "./FileSystemStrategy";
 
 import { Locale } from "./Locale";
 
-import { diff, DiffDeleted, applyChange } from "deep-diff";
+import { diff, DiffDeleted, applyChange, Diff } from "deep-diff";
 import z, { ZodTypeAny } from "zod";
 
 /**
@@ -235,6 +235,58 @@ export class LocaleFileManager {
     return !!this.previous_output;
   }
 
+  private GetDifferencesAndDeletions(
+    diffs: Diff<any, RecordWithUnknownValue>[]
+  ) {
+    const deletions: DiffDeleted<object>[] = [];
+
+    const diff_object = diffs.reduce((accumulator, currentValue) => {
+      if (
+        currentValue.kind === Difference.New ||
+        currentValue.kind === Difference.Edited
+      ) {
+        return {
+          ...accumulator,
+          ...this.CreateKeyValue(
+            currentValue.path as string[],
+            currentValue.rhs
+          ),
+        };
+      } else {
+        if (currentValue.kind === Difference.Deleted)
+          deletions.push(currentValue);
+      }
+
+      return accumulator;
+    }, {});
+
+    return { diff_object, deletions };
+  }
+
+  private ApplyDifferences(
+    diff_object_generations: RecordWithUnknownValue,
+    deletions: DiffDeleted<object>[]
+  ) {
+    for (const key in diff_object_generations) {
+      if (Object.prototype.hasOwnProperty.call(diff_object_generations, key)) {
+        //@ts-ignore
+        this.output[key] = {
+          //@ts-ignore
+          ...this.previous_output[key],
+          //@ts-ignore
+          ...diff_object_generations[key],
+        };
+        for (let index = 0; index < deletions.length; index++) {
+          const element = deletions[index];
+          if (element) {
+            //@ts-ignore
+            applyChange(this.output[key], undefined, element);
+          }
+        }
+      }
+    }
+  }
+
   public async Manage() {
     // 1. there is a source file and no previous generation has been made.
     // action: manager should generate all locale files and all of their key - values
@@ -251,7 +303,6 @@ export class LocaleFileManager {
 
     // 2. a locale is added and/or removed.
     // action: manager should generate the added locale and/or remove a deleted locale
-    // lets add a getter method that ensures this value we're passing is valid
     if (!this.previous_output) {
       throw Error("Previous output does not exist!");
     }
@@ -283,71 +334,29 @@ export class LocaleFileManager {
     }
 
     // 3. it's possible that locales was not changed, but that the source file was changed.
-    // OR locales was changed and the source file was changed
+    // OR locales was changed AND the source file was changed
+
     // what changes could the user make...
     // (add a property to the source, remove a property from the source, change the value for one of the sources keys. change the name of one of the source keys)
-    const changes = this.GetSourceAndLocaleDiff();
+    const source_locale_diffs = this.GetSourceAndLocaleDiff();
 
-    // NOTE: for the locales that were just generated we have the latest changes so we don't need to compare the objects
-    // currently we just look in the locales folder for all the files
-    // if something was removed from the locales folder this wont be compared so thats fine
-    // if something was just added it would be compared though it does not need to be.
-    // lets provide the locales less any just generated locales as an arg
+    if (!source_locale_diffs) {
+      console.log("Finished generating!");
 
-    if (!changes) {
-      // FIXME: this log does not not make sense.  EX: we add/remove a locale and generate.
-      // this makes is seem like we have not made any changes nor have we generated anything, but we have.
-      // we're ready to conclude the program AND we have potentially made a generation.
-      console.log(
-        "Source file is identical to locales. Make changes before generating new files."
-      );
       return this.strategy.OutputLocales(this.output);
     }
 
-    const deletions: DiffDeleted<object>[] = [];
+    const { diff_object, deletions } =
+      this.GetDifferencesAndDeletions(source_locale_diffs);
 
-    const value = changes.reduce((accumulator, currentValue) => {
-      if (
-        currentValue.kind === Difference.New ||
-        currentValue.kind === Difference.Edited
-      ) {
-        return {
-          ...accumulator,
-          ...this.CreateKeyValue(
-            currentValue.path as string[],
-            currentValue.rhs
-          ),
-        };
-      } else {
-        // FIXME:
-        // can we add deleted keys too an array while we reduce?
-
-        if (currentValue.kind === Difference.Deleted)
-          deletions.push(currentValue);
-      }
-
-      return accumulator;
-    }, {});
-
-    const result = await this.GenerateAllLocaleFiles(
+    console.log(diff_object, deletions);
+    const diff_object_generations = await this.GenerateAllLocaleFiles(
       this.locales,
       this.source_locale,
-      value
+      diff_object
     );
 
-    for (const key in result) {
-      if (Object.prototype.hasOwnProperty.call(result, key)) {
-        //@ts-ignore
-        this.output[key] = { ...this.previous_output[key], ...result[key] };
-        for (let index = 0; index < deletions.length; index++) {
-          const element = deletions[index];
-          if (element) {
-            //@ts-ignore
-            applyChange(this.output[key], undefined, element);
-          }
-        }
-      }
-    }
+    this.ApplyDifferences(diff_object_generations, deletions);
 
     console.log("Finished generating!");
     return this.strategy.OutputLocales(this.output);
