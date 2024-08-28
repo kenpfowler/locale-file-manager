@@ -1,6 +1,8 @@
+import { RecordWithUnknownValue } from "./types";
+
 export interface IStrategy {
-  GetLocalesSource: (source?: string) => object;
-  GetPreviousLocales: (source?: string) => object | null;
-  RemoveLocale: (key: string, locales: object) => void;
-  OutputLocales: (locales: object) => Promise<void | string>;
+  GetLocalesSource: (source?: string) => RecordWithUnknownValue;
+  GetPreviousLocales: (source?: string) => RecordWithUnknownValue | null;
+  RemoveLocale: (key: string, locales: RecordWithUnknownValue) => void;
+  OutputLocales: (locales: RecordWithUnknownValue) => Promise<void | string>;
 }

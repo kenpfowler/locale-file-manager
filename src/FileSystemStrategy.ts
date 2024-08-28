@@ -5,7 +5,7 @@ import z from "zod";
 import { IStrategy } from "./IStrategy";
 import { LocaleFileWriter } from "./LocaleFileWriter";
 import { LocaleFileValidator } from "./LocaleFileValidator";
-import { RecordWithUnknownValue } from "./Types";
+import { RecordWithUnknownValue } from "./types";
 import { FileSystemConfigSchema } from "./Config";
 
 export type FileSystemStrategyArgs = Pick<
@@ -90,11 +90,10 @@ export class FileSystemStrategy implements IStrategy {
     if (locales_to_update.length === 0) {
       return null;
     }
-    const locales = {};
+    const locales: RecordWithUnknownValue = {};
 
     locales_to_update.forEach((locale) => {
       const object = this.GetLocaleObjectFromLocales(locale);
-      // @ts-ignore
       locales[locale.split(".")[0] as string] = object;
     });
 

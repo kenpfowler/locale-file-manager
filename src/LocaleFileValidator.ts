@@ -1,4 +1,5 @@
 import { ZodSchema } from "zod";
+import { RecordWithUnknownValue } from "./types";
 
 /**
  * validates that locale file data was created successfully
@@ -12,10 +13,16 @@ export class LocaleFileValidator {
     return typeof obj === "object" && obj !== null;
   }
 
+  public isRecordWithUnknownValue<T = unknown>(
+    obj: unknown
+  ): obj is RecordWithUnknownValue<T> {
+    return typeof obj === "object" && obj !== null && !Array.isArray(obj);
+  }
+
   public parseJSON(source: string) {
     const object = JSON.parse(source);
 
-    if (!this.isObject(object)) {
+    if (!this.isRecordWithUnknownValue(object)) {
       throw Error("JSON.parse did not return a javascript object");
     }
 
