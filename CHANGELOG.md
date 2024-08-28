@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.6.10
+
+### Patch Changes
+
+- e816649: fix merge funciton
+
 ## 0.6.9
 
 ### Patch Changes
