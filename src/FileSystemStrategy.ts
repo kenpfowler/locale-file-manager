@@ -108,8 +108,7 @@ export class FileSystemStrategy implements IStrategy {
     return source;
   }
 
-  public RemoveLocale(key: string, output: object) {
-    // @ts-ignore
+  public RemoveLocale(key: string, output: RecordWithUnknownValue) {
     delete output[key];
     fs.unlinkSync(
       path.join(path.join(process.cwd(), this.locales_path), `${key}.json`)
