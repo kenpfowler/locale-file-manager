@@ -2,7 +2,7 @@ import { ConfigType, Config } from "./Config";
 import { IStrategy } from "./IStrategy";
 import { IGenerator } from "./IGenerator";
 import { Difference } from "./Difference";
-import { RecordWithUnknownValue } from "./Types";
+import { RecordWithUnknownValue } from "./types";
 
 import { LocaleFileValidator } from "./LocaleFileValidator";
 import { LocaleFileGenerator } from "./LocaleFileGenerator";
@@ -29,10 +29,10 @@ export class LocaleFileManager {
 
   // locales state
   private readonly locales: Locale[];
-  private readonly source: object;
+  private readonly source: RecordWithUnknownValue;
   private readonly source_locale: Locale;
-  private readonly previous_output: object | null = null;
-  private output: object = {};
+  private readonly previous_output: RecordWithUnknownValue | null = null;
+  private output: RecordWithUnknownValue = {};
 
   constructor(args: Config) {
     switch (args.type) {
@@ -263,21 +263,48 @@ export class LocaleFileManager {
     return { diff_object, deletions };
   }
 
+  private deepMerge<T extends object, U extends object>(
+    target: T,
+    source: U
+  ): T & U {
+    const output = { ...target } as T & U;
+
+    for (const key in source) {
+      if (source.hasOwnProperty(key)) {
+        if (
+          typeof source[key] === "object" &&
+          source[key] !== null &&
+          !Array.isArray(source[key]) &&
+          typeof output[key] === "object" &&
+          output[key] !== null &&
+          !Array.isArray(output[key])
+        ) {
+          output[key] = this.deepMerge(output[key], source[key]);
+        } else {
+          output[key] = source[key] as any;
+        }
+      }
+    }
+
+    return output;
+  }
+
   private ApplyDifferences(
     diff_object_generations: RecordWithUnknownValue,
     deletions: DiffDeleted<object>[]
   ) {
     for (const key in diff_object_generations) {
       if (Object.prototype.hasOwnProperty.call(diff_object_generations, key)) {
-        //@ts-ignore
-        this.output[key] = {
+        this.output[key] = this.deepMerge(
           //@ts-ignore
-          ...this.previous_output[key],
+          this.previous_output[key],
           //@ts-ignore
-          ...diff_object_generations[key],
-        };
+          diff_object_generations[key]
+        );
+
         for (let index = 0; index < deletions.length; index++) {
           const element = deletions[index];
+
           if (element) {
             //@ts-ignore
             applyChange(this.output[key], undefined, element);
@@ -342,14 +369,12 @@ export class LocaleFileManager {
 
     if (!source_locale_diffs) {
       console.log("Finished generating!");
-
       return this.strategy.OutputLocales(this.output);
     }
 
     const { diff_object, deletions } =
       this.GetDifferencesAndDeletions(source_locale_diffs);
 
-    console.log(diff_object, deletions);
     const diff_object_generations = await this.GenerateAllLocaleFiles(
       this.locales,
       this.source_locale,
