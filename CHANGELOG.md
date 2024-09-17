@@ -1,5 +1,13 @@
 # locale_file_generator
 
+## 0.7.0
+
+### Minor Changes
+
+- 8dacbbc: - handle generations that exceed model output
+  - add useCustomGenerator method to LocaleFileManager Class
+  - misc naming and typing updates
+
 ## 0.6.10
 
 ### Patch Changes
