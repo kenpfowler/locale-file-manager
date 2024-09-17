@@ -1,9 +1,9 @@
 import { Locale } from "./Locale";
 
 export interface IGenerator {
-  GetLocaleTranslationsAsJSON: (
-    source: object,
-    default_locale: Locale,
-    locales: Locale[]
-  ) => Promise<string | null>;
+  handleChatCompletion: (
+    source_locale: Locale,
+    target_locales: Locale[],
+    source: object
+  ) => Promise<string>;
 }

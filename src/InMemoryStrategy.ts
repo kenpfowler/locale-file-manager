@@ -1,5 +1,6 @@
 import { IStrategy } from "./IStrategy";
 import { LocaleFileValidator } from "./LocaleFileValidator";
+import { RecordWithUnknownValue } from "./types";
 
 export class InMemoryStrategy implements IStrategy {
   private readonly validator = new LocaleFileValidator();
@@ -18,12 +19,11 @@ export class InMemoryStrategy implements IStrategy {
     return this.validator.parseJSON(previous_output);
   }
 
-  public RemoveLocale(key: string, output: object) {
-    // @ts-ignore
+  public RemoveLocale(key: string, output: RecordWithUnknownValue) {
     delete output[key];
   }
 
-  public async OutputLocales(locales: object) {
+  public async OutputLocales(locales: RecordWithUnknownValue) {
     return JSON.stringify(locales);
   }
 }
