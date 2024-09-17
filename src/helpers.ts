@@ -3,7 +3,8 @@ import { Locale } from "./Locale";
 import fs from "fs";
 
 const ConfigSchema = z.object({
-  locales: z.array(z.nativeEnum(Locale)),
+  // FIXME: locales should be a set of Locale since there is never a reason to duplicate an entry in an array
+  target_locales: z.array(z.nativeEnum(Locale)),
   excluded_files: z.optional(z.array(z.string())),
   locales_path: z.string(),
   source_path: z.string(),

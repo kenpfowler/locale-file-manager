@@ -8,7 +8,7 @@ export enum ConfigType {
 
 export const InMemoryConfigSchema = z.object({
   type: z.literal(ConfigType.InMemory),
-  locales: z.array(z.nativeEnum(Locale)),
+  target_locales: z.array(z.nativeEnum(Locale)),
   source_locale: z.nativeEnum(Locale),
   source: z.string(),
   previous_output: z.string(),
@@ -16,7 +16,7 @@ export const InMemoryConfigSchema = z.object({
 
 export const FileSystemConfigSchema = z.object({
   type: z.literal(ConfigType.FileSystem),
-  locales: z.array(z.nativeEnum(Locale)),
+  target_locales: z.array(z.nativeEnum(Locale)),
   excluded_files: z.optional(z.array(z.string())),
   locales_path: z.string(),
   source_path: z.string(),

@@ -23,12 +23,12 @@ export class LocaleFileManager {
   private readonly type: ConfigType;
 
   //  dependencies
+  private generator: IGenerator = new LocaleFileGenerator();
   private readonly strategy: IStrategy;
-  private readonly generator: IGenerator = new LocaleFileGenerator();
   private readonly validator: LocaleFileValidator = new LocaleFileValidator();
 
   // locales state
-  private readonly locales: Locale[];
+  private readonly target_locales: Locale[];
   private readonly source: RecordWithUnknownValue;
   private readonly source_locale: Locale;
   private readonly previous_output: RecordWithUnknownValue | null = null;
@@ -43,7 +43,7 @@ export class LocaleFileManager {
           locales_path: args.locales_path,
           excluded_files: args.excluded_files,
         });
-        this.locales = args.locales;
+        this.target_locales = args.target_locales;
         this.source_locale = args.source_locale;
         this.source = this.strategy.GetLocalesSource();
         this.previous_output = this.strategy.GetPreviousLocales();
@@ -54,7 +54,7 @@ export class LocaleFileManager {
           args.previous_output
         );
         this.source = this.strategy.GetLocalesSource(args.source);
-        this.locales = args.locales;
+        this.target_locales = args.target_locales;
         this.source_locale = args.source_locale;
         this.type = args.type;
         break;
@@ -63,17 +63,21 @@ export class LocaleFileManager {
     }
   }
 
-  public async GenerateAllLocaleFiles(
-    locales: Locale[],
+  public useCustomGenerator(generator: IGenerator) {
+    this.generator = generator;
+  }
+
+  private async GenerateAllLocaleFiles(
+    target_locales: Locale[],
     source_locale: Locale,
     source: RecordWithUnknownValue
   ) {
-    const masterSchema = this.getMasterSchema(locales, source);
+    const masterSchema = this.getMasterSchema(target_locales, source);
 
-    const result = await this.generator.GetLocaleTranslationsAsJSON(
-      source,
+    const result = await this.generator.handleChatCompletion(
       source_locale,
-      locales
+      target_locales,
+      source
     );
 
     const validated = this.validator.ValidateLocaleTranslation<
@@ -86,7 +90,10 @@ export class LocaleFileManager {
     };
   }
 
-  public LocalesArrayDifference(locales: Locale[], previous_locales: Locale[]) {
+  private LocalesArrayDifference(
+    locales: Locale[],
+    previous_locales: Locale[]
+  ) {
     const locales_set = new Set(locales);
     const previous_locales_set = new Set(previous_locales);
 
@@ -101,7 +108,7 @@ export class LocaleFileManager {
     return diff1.concat(diff2);
   }
 
-  public GetLocalesToAddRemoveFromDiff(diffs: Locale[], locales: Locale[]) {
+  private GetLocalesToAddRemoveFromDiff(diffs: Locale[], locales: Locale[]) {
     const user_locales = new Set(locales);
     const batch: { add: Locale[]; remove: string[] } = { add: [], remove: [] };
 
@@ -116,11 +123,11 @@ export class LocaleFileManager {
     return batch;
   }
 
-  public IsLocalesChanged(diffs: Locale[]) {
+  private IsLocalesChanged(diffs: Locale[]) {
     return !!diffs.length;
   }
 
-  public async RemoveLocales(locales_to_remove: string[]) {
+  private async RemoveLocales(locales_to_remove: string[]) {
     if (!locales_to_remove.length) return;
 
     for (let index = 0; index < locales_to_remove.length; index++) {
@@ -135,7 +142,7 @@ export class LocaleFileManager {
    * @param value
    * @returns an object where the value provided is nested given an path of keys
    */
-  public CreateKeyValue(path: string[], value: string | object) {
+  private CreateKeyValue(path: string[], value: string | object) {
     let obj = {};
 
     for (let index = path.length - 1; index >= 0; index--) {
@@ -157,7 +164,7 @@ export class LocaleFileManager {
    * @param object object used as the source of your translation file
    * @returns a zod schema that can be used to validate the object used as the param
    */
-  public createSchemaFromObject(object: RecordWithUnknownValue) {
+  private createSchemaFromObject(object: RecordWithUnknownValue) {
     const schemaShape: Record<string, ZodTypeAny> = {};
 
     // this loop will take an object that is arbitrarily deep and create a schema used to validate that object
@@ -194,7 +201,7 @@ export class LocaleFileManager {
    * @param source source locale file used to create validation schema
    * @returns a zod object where they keys are locales and the value is a schema mapped to the users source locale file
    */
-  public getMasterSchema(
+  private getMasterSchema(
     locales: Array<Locale>,
     source: RecordWithUnknownValue
   ) {
@@ -319,7 +326,7 @@ export class LocaleFileManager {
     // action: manager should generate all locale files and all of their key - values
     if (!this.HasPreviousOutput()) {
       this.output = await this.GenerateAllLocaleFiles(
-        this.locales,
+        this.target_locales,
         this.source_locale,
         this.GetSourceLocaleObject()
       );
@@ -335,11 +342,11 @@ export class LocaleFileManager {
     }
 
     const diff = this.LocalesArrayDifference(
-      this.locales,
+      this.target_locales,
       Object.keys(this.previous_output) as Locale[]
     );
 
-    const batch = this.GetLocalesToAddRemoveFromDiff(diff, this.locales);
+    const batch = this.GetLocalesToAddRemoveFromDiff(diff, this.target_locales);
 
     if (this.IsLocalesChanged(diff)) {
       if (batch.add.length) {
@@ -376,7 +383,7 @@ export class LocaleFileManager {
       this.GetDifferencesAndDeletions(source_locale_diffs);
 
     const diff_object_generations = await this.GenerateAllLocaleFiles(
-      this.locales,
+      this.target_locales,
       this.source_locale,
       diff_object
     );
