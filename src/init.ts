@@ -7,7 +7,7 @@ import * as path from "path";
 const dirs = ["locales"];
 const files: { [key: string]: string } = {
   "config.json": `{
-  "locales": ["en", "fr-CA"],
+  "target_locales": ["en", "fr-CA"],
   "locales_path": "locales",
   "source_path": "en.json",
   "source_locale": "en"
