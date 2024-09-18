@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.7.1
+
+### Patch Changes
+
+- 716eba1: fix property name
+
 ## 0.7.0
 
 ### Minor Changes
