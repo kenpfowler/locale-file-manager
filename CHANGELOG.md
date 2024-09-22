@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.7.2
+
+### Patch Changes
+
+- af26def: modify generator code to estimate token counts more accurately and batch large outputs
+
 ## 0.7.1
 
 ### Patch Changes
