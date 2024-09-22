@@ -20,14 +20,14 @@ const main = async () => {
 
     // Check if the config file exists
     if (!fs.existsSync(configFilePath)) {
-      console.error(`Config file not found: ${configFilePath}`);
+      console.error(`Config file not found at: ${configFilePath}`);
       process.exit(1);
     }
 
     // Load and process the config file
     const config = readConfig(configFilePath);
 
-    console.log("Config loaded successfully:", config);
+    console.log("Config loaded successfully");
 
     const context = new LocaleFileManager({
       type: ConfigType.FileSystem,
