@@ -23,7 +23,7 @@ export class LocaleFileValidator {
     const object = JSON.parse(source);
 
     if (!this.isRecordWithUnknownValue(object)) {
-      throw Error("JSON.parse did not return a javascript object");
+      throw new Error("JSON.parse did not return a javascript object");
     }
 
     return object;
@@ -34,7 +34,7 @@ export class LocaleFileValidator {
     schema: ZodSchema<T>
   ) {
     if (!this.isString(source)) {
-      throw Error("argument for property source should be type string");
+      throw new Error("argument for property source should be type string");
     }
     const parsed = this.parseJSON(source);
     const validated = schema.parse(parsed);

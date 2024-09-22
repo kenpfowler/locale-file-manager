@@ -60,7 +60,7 @@ export class FileSystemStrategy implements IStrategy {
     const maybeJSON = fs.readFileSync(filePath, "utf8");
 
     if (maybeJSON.length === 0) {
-      throw Error(`File should be in JSON format at: ${filePath}`);
+      throw new Error(`File should be in JSON format at: ${filePath}`);
     }
 
     const file = this.validator.parseJSON(fs.readFileSync(filePath, "utf8"));

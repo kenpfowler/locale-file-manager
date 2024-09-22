@@ -7,7 +7,7 @@ export class InMemoryStrategy implements IStrategy {
 
   public GetLocalesSource(source?: string) {
     if (!source) {
-      throw Error("Must supply value for source");
+      throw new Error("Must supply value for source");
     }
 
     return this.validator.parseJSON(source);

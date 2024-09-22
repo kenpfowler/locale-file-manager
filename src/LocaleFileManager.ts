@@ -59,7 +59,7 @@ export class LocaleFileManager {
         this.type = args.type;
         break;
       default:
-        throw Error("Invalid Configuration");
+        throw new Error("Invalid Configuration");
     }
   }
 
@@ -177,14 +177,14 @@ export class LocaleFileManager {
             object[key] as RecordWithUnknownValue
           );
         } else {
-          throw Error(
+          throw new Error(
             `value accessed by key: ${key} is type ${typeof object[
               key
             ]}, but has no keys. objects must not be empty`
           );
         } // Recursively create schema for nested objects
       } else {
-        throw Error(
+        throw new Error(
           `value accessed by key: ${key} is type ${typeof object[
             key
           ]}.  all values should be string or object`
@@ -208,7 +208,7 @@ export class LocaleFileManager {
     const schemaShape: Partial<Record<Locale, ZodTypeAny>> = {};
 
     if (!Object.keys(source).length) {
-      throw Error("Cannot create schema from empty object");
+      throw new Error("Cannot create schema from empty object");
     }
 
     const localeSchema = this.createSchemaFromObject(source);
@@ -338,7 +338,7 @@ export class LocaleFileManager {
     // 2. a locale is added and/or removed.
     // action: manager should generate the added locale and/or remove a deleted locale
     if (!this.previous_output) {
-      throw Error("Previous output does not exist!");
+      throw new Error("Previous output does not exist!");
     }
 
     const diff = this.LocalesArrayDifference(
