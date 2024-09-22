@@ -7,6 +7,7 @@ import { OpenAI } from "openai";
 import { Locale } from "./Locale";
 import { IGenerator } from "./IGenerator";
 import { locale_token_multiplier } from "./TokenMultiplier";
+import { Action, Logger } from "./Logger";
 
 /**
  * wrapper for the open ai client that can be configured to generate locale files from a single source file
@@ -278,6 +279,10 @@ export class LocaleFileGenerator implements IGenerator {
         target_locales
       )
     ) {
+      Logger.message(
+        Action.Generating,
+        "started generating locale files, this may take a while..."
+      );
       const params = this.createChatCompletionParams(
         systemMessage,
         userMessage
@@ -291,6 +296,7 @@ export class LocaleFileGenerator implements IGenerator {
         throw new Error("The translation failed to generate content.");
       }
 
+      Logger.message(Action.Generating, "generation is complete");
       return result;
     }
 
@@ -318,6 +324,10 @@ export class LocaleFileGenerator implements IGenerator {
       batches.push(batch);
     }
 
+    Logger.message(
+      Action.Generating,
+      "started generating locale files, this may take a while..."
+    );
     const results = await Promise.all(
       batches.map(async (batch) => {
         const batch_user_message = this.createUserMessage(
@@ -354,6 +364,7 @@ export class LocaleFileGenerator implements IGenerator {
     );
 
     const locales = Object.assign({}, ...results);
+    Logger.message(Action.Generating, "generation is complete");
     return JSON.stringify(locales);
   }
 }

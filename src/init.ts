@@ -2,6 +2,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { Action, Logger } from "./Logger";
 
 // Define the paths and default contents
 const dirs = ["locales"];
@@ -21,19 +22,22 @@ const files: { [key: string]: string } = {
 const createDir = (dir: string) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
-    console.log(`Created directory: ${dir}`);
+    Logger.message(Action.Initializing, `created directory: ${dir}`);
   }
 };
 
 const createFile = (filePath: string, content: string) => {
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, content);
-    console.log(`Created file: ${filePath}`);
+    Logger.message(Action.Initializing, `created file: ${filePath}`);
   }
 };
 
 const initProject = () => {
-  console.log("Initializing locale file manager setup...");
+  Logger.message(
+    Action.Initializing,
+    "initializing locale file manager setup..."
+  );
 
   dirs.forEach((dir) => createDir(path.join(process.cwd(), dir)));
 
@@ -41,7 +45,7 @@ const initProject = () => {
     createFile(path.join(process.cwd(), filePath), content);
   }
 
-  console.log("Setup complete!");
+  Logger.message(Action.Initializing, "setup complete");
 };
 
 initProject();

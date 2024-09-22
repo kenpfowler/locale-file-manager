@@ -5,6 +5,7 @@ import path from "path";
 import { readConfig } from "./helpers";
 import { ConfigType } from "./Config";
 import { LocaleFileManager } from "./LocaleFileManager";
+import { Logger } from "./Logger";
 
 const main = async () => {
   try {
@@ -12,7 +13,7 @@ const main = async () => {
     const args = process.argv.slice(2);
 
     if (args.length === 0) {
-      console.error("Please provide a path to the config file.");
+      console.error("please provide a path to the config file.");
       process.exit(1);
     }
 
@@ -20,15 +21,14 @@ const main = async () => {
 
     // Check if the config file exists
     if (!fs.existsSync(configFilePath)) {
-      console.error(`Config file not found at: ${configFilePath}`);
+      console.error(`config file not found at: ${configFilePath}`);
       process.exit(1);
     }
 
     // Load and process the config file
     const config = readConfig(configFilePath);
 
-    console.log("Config loaded successfully");
-
+    Logger.message("configuring", "config file loaded successfully");
     const context = new LocaleFileManager({
       type: ConfigType.FileSystem,
       ...config,

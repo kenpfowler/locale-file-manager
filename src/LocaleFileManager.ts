@@ -14,6 +14,7 @@ import { Locale } from "./Locale";
 
 import { diff, DiffDeleted, applyChange, Diff } from "deep-diff";
 import z, { ZodTypeAny } from "zod";
+import { Action, Logger } from "./Logger";
 
 /**
  * manages changes to a locales object given a source, list of locales, and previously generated locales
@@ -331,7 +332,7 @@ export class LocaleFileManager {
         this.GetSourceLocaleObject()
       );
 
-      console.log("Generated locale objects");
+      Logger.message(Action.Managing, "output is ready");
       return this.strategy.OutputLocales(this.output);
     }
 
@@ -356,13 +357,17 @@ export class LocaleFileManager {
           this.GetSourceLocaleObject()
         );
 
-        console.log(`Added the following locale(s): ${batch.add.join(", ")}`);
+        Logger.message(
+          Action.Managing,
+          `added the following locale(s): ${batch.add.join(", ")}`
+        );
       }
 
       if (batch.remove.length) {
         this.RemoveLocales(batch.remove);
-        console.log(
-          `Removed the following locale(s): ${batch.remove.join(", ")}`
+        Logger.message(
+          Action.Managing,
+          `removed the following locale(s): ${batch.remove.join(", ")}`
         );
       }
     }
@@ -375,7 +380,7 @@ export class LocaleFileManager {
     const source_locale_diffs = this.GetSourceAndLocaleDiff();
 
     if (!source_locale_diffs) {
-      console.log("Finished generating!");
+      Logger.message(Action.Managing, "output is ready");
       return this.strategy.OutputLocales(this.output);
     }
 
@@ -390,7 +395,7 @@ export class LocaleFileManager {
 
     this.ApplyDifferences(diff_object_generations, deletions);
 
-    console.log("Finished generating!");
+    Logger.message(Action.Managing, "output is ready");
     return this.strategy.OutputLocales(this.output);
   }
 }
