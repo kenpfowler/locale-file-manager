@@ -34,12 +34,13 @@
     "vitest": "^2.1.1"
   },
   "peerDependencies": {
-    "zod": "^3",
-    "deep-diff": "^1"
+    "deep-diff": "^1",
+    "zod": "^3"
   },
   "dependencies": {
     "deep-diff": "^1.0.2",
     "dotenv": "^16.4.5",
+    "js-tiktoken": "^1.0.14",
     "openai": "^4.61.1",
     "zod": "^3.23.8"
   }
