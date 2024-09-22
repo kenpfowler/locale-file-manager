@@ -1,5 +1,11 @@
 # locale_file_generator
 
+## 0.7.3
+
+### Patch Changes
+
+- 2eb68f6: added simple logging and messages reporting user feedback
+
 ## 0.7.2
 
 ### Patch Changes
